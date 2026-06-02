@@ -1,0 +1,10 @@
+streamlit
+pandas
+openpyxl
+requests
+openai
+playwright
+python-dotenv
+fastapi
+uvicorn
+pydantic
