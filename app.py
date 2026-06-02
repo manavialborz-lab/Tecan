@@ -7,16 +7,15 @@ from serpapi_search import search_paper
 from ai_screening import screen_papers_with_ai
 import subprocess
 import sys
-
 def install_playwright_browser_if_needed():
-    if os.getenv("STREAMLIT_RUNTIME_ENV") == "cloud":
-        try:
-            subprocess.run(
-                [sys.executable, "-m", "playwright", "install", "chromium"],
-                check=True
-            )
-        except Exception as e:
-            print("Playwright install failed:", e)
+    try:
+        subprocess.run(
+            [sys.executable, "-m", "playwright", "install", "chromium"],
+            check=True
+        )
+        print("Chromium installiert")
+    except Exception as e:
+        print("Playwright install failed:", e)
 
 install_playwright_browser_if_needed()
 
