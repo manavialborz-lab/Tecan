@@ -7,6 +7,22 @@ from serpapi_search import search_paper
 from ai_screening import screen_papers_with_ai
 import subprocess
 import sys
+
+import streamlit as st
+
+st.set_page_config(layout="wide")
+
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 0rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.image("IBL.jpg", use_container_width=True)
 def install_playwright_browser_if_needed():
     try:
         subprocess.run(
