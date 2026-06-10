@@ -15,6 +15,7 @@ st.markdown("""
     padding-top: 1rem;
 }
 </style>
+""", unsafe_allow_html=True)
 
 
 def install_playwright_browser_if_needed():
