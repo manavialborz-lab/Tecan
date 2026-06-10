@@ -322,7 +322,7 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
 
 
 def main():
-    logo_col, title_col = st.columns([1, 5], vertical_alignment="center")
+    logo_col, title_col = st.columns([0.8, 5], vertical_alignment="center")
 
     with logo_col:
         st.image("Logo_Tecan.svg", width=180)  # no width, no use_container_width
