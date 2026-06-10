@@ -346,6 +346,11 @@ def main():
             Post-Market Surveillance Literature Assessment
         </p>
         """, unsafe_allow_html=True)
+        
+    tab_search, tab_ai = st.tabs([
+        "Literature Search",
+        "AI Screening"
+    ])    
     with tab_search:
         render_search_tab()
 
