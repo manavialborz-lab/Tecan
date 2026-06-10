@@ -330,6 +330,7 @@ def main():
         st.title("PMS Literature Screening Tool")
 
     with header_right:
+        st.markdown("<div style='margin-top:20px'></div>", unsafe_allow_html=True)
         st.image("IBL.jpg", width=260)
 
     tab_search, tab_ai = st.tabs([
