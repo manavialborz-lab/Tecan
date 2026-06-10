@@ -9,16 +9,13 @@ import subprocess
 import sys
 
 st.set_page_config(page_title="PMS Literature Screening Tool", layout="wide")
+st.markdown("""
+<style>
+.block-container {
+    padding-top: 1rem;
+}
+</style>
 
-# st.markdown("""
-# <style>
-# .block-container {
-#     padding-top: 0rem;
-#     padding-left: 0rem;
-#     padding-right: 0rem;
-# }
-# </style>
-# """, unsafe_allow_html=True)
 
 def install_playwright_browser_if_needed():
     try:
@@ -327,7 +324,6 @@ def main():
     logo_col, title_col = st.columns([1, 5], vertical_alignment="center")
 
     with logo_col:
-        st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
         st.image("Logo_Tecan.svg", width=180)  # no width, no use_container_width
 
     with title_col:
@@ -341,7 +337,7 @@ def main():
             color:#6b7280;
             font-size:18px;
             font-style:italic;
-            font-weight:400;
+            # font-weight:400;
         ">
             Post-Market Surveillance Literature Assessment
         </p>
