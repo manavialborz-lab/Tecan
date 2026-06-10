@@ -330,7 +330,7 @@ def main():
         st.title("PMS Literature Screening Tool")
 
     with header_right:
-        st.image("IBL.jpg", width=420)
+        st.image("IBL.jpg", width=220)
 
     tab_search, tab_ai = st.tabs([
         "Literature Search",
