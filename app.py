@@ -330,21 +330,22 @@ def main():
         st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
         st.image("Logo_Tecan.svg", width=160)  # no width, no use_container_width
 
-    st.markdown("""
-    <h1 style="margin-bottom:0;">
+    with title_col:
+        st.markdown("""
+        <h1 style="margin-bottom:0;">
         PMS Literature Screening Tool
-    </h1>
+        </h1>
 
-    <p style="
-        margin-top:-5px;
-        color:#6b7280;
-        font-size:18px;
-        font-style:italic;
-        font-weight:400;
-    ">
-        Post-Market Surveillance Literature Assessment
-    </p>
-    """, unsafe_allow_html=True)
+        <p style="
+            margin-top:-5px;
+            color:#6b7280;
+            font-size:18px;
+            font-style:italic;
+            font-weight:400;
+        ">
+            Post-Market Surveillance Literature Assessment
+        </p>
+        """, unsafe_allow_html=True)
     with tab_search:
         render_search_tab()
 
