@@ -327,6 +327,7 @@ def main():
     logo_col, title_col = st.columns([1, 6], vertical_alignment="center")
 
     with logo_col:
+        st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
         st.image("IBL.jpg")  # no width, no use_container_width
 
     with title_col:
