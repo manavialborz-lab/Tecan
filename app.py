@@ -338,7 +338,7 @@ def main():
             color:#6b7280;
             font-size:18px;
             font-style:italic;
-            # font-weight:400;
+            font-weight:400;
         ">
             Post-Market Surveillance Literature Assessment
         </p>
