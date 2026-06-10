@@ -8,21 +8,18 @@ from ai_screening import screen_papers_with_ai
 import subprocess
 import sys
 
-import streamlit as st
-
 st.set_page_config(layout="wide")
 
-st.markdown("""
-<style>
-.block-container {
-    padding-top: 0rem;
-    padding-left: 0rem;
-    padding-right: 0rem;
-}
-</style>
-""", unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+# .block-container {
+#     padding-top: 0rem;
+#     padding-left: 0rem;
+#     padding-right: 0rem;
+# }
+# </style>
+# """, unsafe_allow_html=True)
 
-st.image("IBL.jpg", use_container_width=True)
 def install_playwright_browser_if_needed():
     try:
         subprocess.run(
@@ -332,7 +329,12 @@ def main():
         layout="wide"
     )
 
-    st.title("PMS Literature Screening Tool")
+    header_left, header_right = st.columns([4, 1])
+
+    with header_left:
+        st.title("PMS Literature Screening Tool")
+    with header_right:
+        st.image("IBL.jpg", width=180)
 
     tab_search, tab_ai = st.tabs([
         "Literature Search",
