@@ -328,7 +328,7 @@ def main():
 
     with logo_col:
         st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
-        st.image("Logo_Tecan.svg", width=160)  # no width, no use_container_width
+        st.image("Logo_Tecan.svg", width=180)  # no width, no use_container_width
 
     with title_col:
         st.markdown("""
