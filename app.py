@@ -324,12 +324,12 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
 
 
 def main():
-    header_left, header_right = st.columns([5, 1])
-
-    with header_left:
-        st.title("PMS Literature Screening Tool")
+    header_left, header_right = st.columns([1, 5])
 
     with header_right:
+        st.title("PMS Literature Screening Tool")
+
+    with header_left:
         st.markdown("<div style='margin-top:15px'></div>", unsafe_allow_html=True)
         st.image("IBL.jpg", width=260)
 
