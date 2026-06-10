@@ -328,7 +328,7 @@ def main():
 
     with logo_col:
         # st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
-        st.image("Tecan_logo.svg", width=140)  # no width, no use_container_width
+        st.image("Logo_Tecan.svg", width=140)  # no width, no use_container_width
 
     with title_col:
         st.title("PMS Literature Screening Tool")
