@@ -324,7 +324,7 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
 
 
 def main():
-    header_left, header_right = st.columns([5, 1], vertical_alignment="center")
+    header_left, header_right = st.columns([6, 1])
 
     with header_left:
         st.title("PMS Literature Screening Tool")
