@@ -329,12 +329,12 @@ def main():
         layout="wide"
     )
 
-    header_left, header_right = st.columns([4, 2])
+    header_left, header_right = st.columns([3, 2])
 
     with header_left:
         st.title("PMS Literature Screening Tool")
     with header_right:
-        st.image("IBL.jpg",use_container_width=True)
+        st.image("IBL.jpg", width=500)
 
     tab_search, tab_ai = st.tabs([
         "Literature Search",
