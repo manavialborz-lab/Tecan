@@ -324,20 +324,27 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
 
 
 def main():
-    logo_col, title_col = st.columns([0.8, 5], vertical_alignment="center")
+    logo_col, title_col = st.columns([1, 5], vertical_alignment="center")
 
     with logo_col:
         st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
         st.image("Logo_Tecan.svg", width=160)  # no width, no use_container_width
 
-    with title_col:
-        st.title("PMS Literature Screening Tool")
+    st.markdown("""
+    <h1 style="margin-bottom:0;">
+        PMS Literature Screening Tool
+    </h1>
 
-    tab_search, tab_ai = st.tabs([
-        "Literature Search",
-        "AI Screening"
-    ])
-
+    <p style="
+        margin-top:-5px;
+        color:#6b7280;
+        font-size:18px;
+        font-style:italic;
+        font-weight:400;
+    ">
+        Post-Market Surveillance Literature Assessment
+    </p>
+    """, unsafe_allow_html=True)
     with tab_search:
         render_search_tab()
 
