@@ -329,7 +329,7 @@ def main():
         layout="wide"
     )
 
-    header_left, header_right = st.columns([3, 2])
+    header_left, header_right = st.columns([3, 2], vertical_alignment="center")
 
     with header_left:
         st.title("PMS Literature Screening Tool")
