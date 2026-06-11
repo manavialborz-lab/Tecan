@@ -4,6 +4,8 @@ from openai import OpenAI
 import os
 from datetime import datetime
 import socket
+from curl_cffi import requests
+
 
 _original_getaddrinfo = socket.getaddrinfo
 
@@ -16,29 +18,94 @@ def fetch_page_text(url):
     if not url or pd.isna(url):
         return "missing_url", ""
 
-    try:
+    url = str(url).strip()
+    lower_url = url.lower()
+
+    def is_bad_text(text):
+        text_lower = text.lower()
+        return (
+            "access denied" in text_lower
+            or "you don't have permission" in text_lower
+            or "captcha" in text_lower
+            or "verify you are human" in text_lower
+            or "i'm not a robot" in text_lower
+            or "403 forbidden" in text_lower
+        )
+
+    def try_click_cookies(page):
+        cookie_selectors = [
+            "#onetrust-accept-btn-handler",
+            "button:has-text('Accept')",
+            "button:has-text('Accept all')",
+            "button:has-text('I agree')",
+            "button:has-text('Agree')",
+            "button:has-text('Allow all')",
+            "button:has-text('Akzeptieren')",
+            "button:has-text('Alle akzeptieren')",
+            "button:has-text('Zustimmen')",
+            "button:has-text('Einverstanden')",
+        ]
+
+        for selector in cookie_selectors:
+            try:
+                page.locator(selector).click(timeout=1500)
+                page.wait_for_timeout(1000)
+                return True
+            except Exception:
+                pass
+        return False
+
+    def read_with_playwright(target_url):
         with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=["--no-sandbox","--disable-dev-shm-usage"])
+            browser = p.chromium.launch(headless=True)
             page = browser.new_page()
-            page.goto(url, wait_until="domcontentloaded", timeout=30000)
-
+            page.goto(target_url, wait_until="domcontentloaded", timeout=30000)
+            try_click_cookies(page)
             text = page.inner_text("body")
-            text_lower = text.lower()
-
             browser.close()
-
-            if (
-                "access denied" in text_lower
-                or "you don't have permission" in text_lower
-                or "captcha" in text_lower
-                or "verify you are human" in text_lower
-                or "i'm not a robot" in text_lower
-            ):
+            if is_bad_text(text):
                 return "blocked", ""
-
             return "ok", text
+
+    # ============ MAIN LOGIC - KEPT SAME FORMAT ============
+    
+    try:
+        # Publisher-specific handling
+        if "wiley.com" in lower_url or "acs.org" in lower_url:
+            return "metadata_only_publisher_blocked", ""
+
+        # MDPI: Try XML endpoint first (less likely to be blocked)
+        if "mdpi.com" in lower_url:
+            # Try XML version first (bypasses CAPTCHA)
+            xml_url = url.replace("/htm", "/xml").replace("/html", "/xml")
+            if "/pdf" not in lower_url and "/xml" not in lower_url:
+                try:
+                    # Use curl_cffi instead of requests to avoid blocking
+                    from curl_cffi import requests as curl_requests
+                    response = curl_requests.get(xml_url, impersonate="chrome120", timeout=30)
+                    if not is_bad_text(response.text) and len(response.text.strip()) > 200:
+                        return "ok_mdpi", response.text[:100000]
+                except Exception:
+                    pass
+            
+            # Fallback to Playwright
+            status, text = read_with_playwright(url)
+            if status == "ok" and len(text.strip()) > 200:
+                return "ok_mdpi", text
+            return "metadata_only_mdpi_not_readable", ""
+
+        # ScienceDirect
+        if "sciencedirect.com" in lower_url:
+            status, text = read_with_playwright(url)
+            if status == "ok" and len(text.strip()) > 200:
+                return "ok_sciencedirect_preview", text
+            return status, text
+
+        # All other publishers
+        status, text = read_with_playwright(url)
+        if status == "ok" and len(text.strip()) > 200:
+            return "ok", text
+        return status, text
 
     except Exception as exc:
         return f"playwright_error: {type(exc).__name__}: {repr(exc)}", ""
