@@ -50,6 +50,11 @@ def dataframe_to_excel_bytes(df):
     df.to_excel(buffer, index=False)
     buffer.seek(0)
     return buffer
+
+def show_dataframe_with_numbering(df):
+    df_display = df.copy()
+    df_display.index = range(1, len(df_display) + 1)
+    st.dataframe(df_display, use_container_width=True)
 ###############################################################
 
 def request_stop():
@@ -79,24 +84,29 @@ def render_search_tab():
 
     with left:
         st.header("Literature Search")
-        st.info(
-    "Search logic: If a search term contains a product or catalog number "
-    "(for example a value with digits), the tool searches the term itself "
-    "and also combines it with each value from 'Additional context terms'. "
-    "For general text search terms without digits, only the original search term is used."
-)
 
         # serpapi_key = st.text_input(
         #     "SerpAPI Key",
         #     type="password"
         # )
+        
+        year_col1, year_col2 = st.columns(2)
 
-        year = st.number_input(
-            "Publication year",
-            min_value=2000,
-            max_value=2035,
-            value=2025
-        )
+        with year_col1:
+            start_year = st.number_input(
+                "Start year",
+                min_value=2000,
+                max_value=2035,
+                value=2020
+            )
+        
+        with year_col2:
+            end_year = st.number_input(
+                "End year",
+                min_value=2000,
+                max_value=2035,
+                value=2025
+            )
 
         search_entities_text = st.text_area(
             "Search terms / product numbers",
@@ -139,19 +149,24 @@ def render_search_tab():
                 st.error("Please enter at least one search term or product number.")
                 return
 
+            if start_year > end_year:
+                st.error("Start year must be smaller than or equal to end year.")
+                return
+
             with st.spinner("Running literature search..."):
                 df_results = search_paper(
                     SERPAPI_KEY=serpapi_key,
-                    Year=year,
+                    start_year=start_year,
+                    end_year=end_year,
                     search_entities=search_entities,
                     context_terms=context_terms,
-                    stop_callback=should_stop_search
+                    stop_callback=should_stop_search  
                 )
 
             st.session_state["search_results"] = df_results
 
             st.success(f"Search finished. Found {len(df_results)} records.")
-            st.dataframe(df_results, use_container_width=True)
+            show_dataframe_with_numbering(df_results)
 
             excel_buffer = dataframe_to_excel_bytes(df_results)
 
@@ -166,7 +181,7 @@ def render_search_tab():
             df_results = st.session_state["search_results"]
 
             st.info("Showing latest search results.")
-            st.dataframe(df_results, use_container_width=True)
+            show_dataframe_with_numbering(df_results)
 
             excel_buffer = dataframe_to_excel_bytes(df_results)
 
@@ -193,12 +208,6 @@ def render_ai_tab():
 
     with left:
         st.header("AI Screening")
-        st.info(
-    "AI screening note: The PMS decision and reason are based on the available evidence source. "
-    "If the evidence source is metadata only, the decision is based on limited information "
-    "such as title, snippet, and summary. If page text was found, the decision also uses "
-    "available text extracted from the paper page."
-)
 
         # openai_key = st.text_input(
         #     "OpenAI API Key",
@@ -256,7 +265,7 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
 
         if df_input is not None:
             st.write(f"Available papers: {len(df_input)}")
-            st.dataframe(df_input.head(), use_container_width=True)
+            show_dataframe_with_numbering(df_input)
 
             if run_ai:
                 # if not openai_key:
@@ -294,7 +303,7 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
                 else:
                     st.success("AI screening finished.")
 
-                st.dataframe(df_screened[display_cols], use_container_width=True)
+                show_dataframe_with_numbering(df_screened[display_cols])
 
                 excel_buffer = dataframe_to_excel_bytes(df_screened)
 
@@ -309,7 +318,7 @@ Exclude animal studies, veterinary diagnostics, and papers unrelated to diagnost
             df_screened = st.session_state["ai_results"]
 
             st.info("Showing latest AI screening results.")
-            st.dataframe(st.session_state["ai_results"], use_container_width=True)
+            show_dataframe_with_numbering(st.session_state["ai_results"])
             
             excel_buffer = dataframe_to_excel_bytes(df_screened)
 
