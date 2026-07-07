@@ -36,7 +36,7 @@ def build_queries(search_terms, context_terms):
     return queries
 
 
-def search_paper(SERPAPI_KEY, Year, search_entities, context_terms, stop_callback=None):
+def search_paper(SERPAPI_KEY, start_year, end_year, search_entities, context_terms, stop_callback=None):
     
     all_results = []
     
@@ -53,8 +53,8 @@ def search_paper(SERPAPI_KEY, Year, search_entities, context_terms, stop_callbac
             "api_key": SERPAPI_KEY,
             "num": 20,
             "start": 0,
-            "as_ylo": Year,
-            "as_yhi": Year
+            "as_ylo": start_year,
+            "as_yhi": end_year
          }
     
         response = requests.get(url, params=params)
@@ -74,13 +74,12 @@ def search_paper(SERPAPI_KEY, Year, search_entities, context_terms, stop_callbac
                 "publication_info", {}
             ).get("summary", "")
 
-            if f"{Year}" in summary:
-                all_results.append({
-                    "query_used": query,
-                    "title": r.get("title"),
-                    "snippet": r.get("snippet", ""),
-                    "summary": summary,
-                    "link": r.get("link")
+            all_results.append({
+                "query_used": query,
+                "title": r.get("title"),
+                "snippet": r.get("snippet", ""),
+                "summary": summary,
+                "link": r.get("link")
                 })
 
         # ---------- pagination ----------
@@ -111,14 +110,12 @@ def search_paper(SERPAPI_KEY, Year, search_entities, context_terms, stop_callbac
                         "publication_info", {}
                     ).get("summary", "")
 
-                    if f"{Year}" in summary:
-                        all_results.append({
-
-                            "query_used": query,
-                            "title": r.get("title"),
-                            "snippet": r.get("snippet", ""),
-                            "summary": summary,
-                            "link": r.get("link")
+                    all_results.append({
+                        "query_used": query,
+                        "title": r.get("title"),
+                        "snippet": r.get("snippet", ""),
+                        "summary": summary,
+                        "link": r.get("link")
                         })
                         
     df = pd.DataFrame(all_results)
@@ -135,8 +132,7 @@ def search_paper(SERPAPI_KEY, Year, search_entities, context_terms, stop_callbac
               "link": "first"
           })
     )
-    os.makedirs("Reports", exist_ok=True)
-    df_unique.to_excel("Reports/search_result.xlsx", index=False)
+    df_unique.to_excel(f"Reports/search_result.xlsx", index=False)
     return df_unique 
 
  
