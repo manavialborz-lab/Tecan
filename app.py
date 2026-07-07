@@ -84,6 +84,13 @@ def render_search_tab():
 
     with left:
         st.header("Literature Search")
+        st.info(
+            "Search logic: If a search term contains a product or catalog number "
+            "(for example a value with digits), the tool searches the term itself "
+            "and also combines it with each value from 'Additional context terms'. "
+            "For general text search terms without digits, only the original search term is used."
+            )
+        
 
         # serpapi_key = st.text_input(
         #     "SerpAPI Key",
@@ -208,6 +215,13 @@ def render_ai_tab():
 
     with left:
         st.header("AI Screening")
+        
+        st.info(
+    "AI screening note: The PMS decision and reason are based on the available evidence source. "
+    "If the evidence source is metadata only, the decision is based on limited information "
+    "such as title, snippet, and summary. If page text was found, the decision also uses "
+    "available text extracted from the paper page."
+        )
 
         # openai_key = st.text_input(
         #     "OpenAI API Key",
