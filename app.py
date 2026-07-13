@@ -217,11 +217,8 @@ def render_ai_tab():
         st.header("AI Screening")
         
         st.info(
-    "The search results from the literature search or an uploaded Excel file can be used. The output and decision are based on the found metadata."
-    "AI screening note: The PMS decision and reason are based on the available evidence source. "
-    "If the evidence source is metadata only, the decision is based on limited information "
-    "such as title, snippet, and summary. If page text was found, the decision also uses "
-    "available text extracted from the paper page."
+    "The search results from the literature search or an uploaded Excel file can be used."
+    "The output and decision are based on the found metadata."
         )
 
         # openai_key = st.text_input(
