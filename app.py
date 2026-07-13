@@ -85,7 +85,7 @@ def render_search_tab():
     with left:
         st.header("Literature Search")
         st.info(
-            "Switch off VPN. Use one line per search term (multiple words allowed)."
+            "Switch off VPN. Use one line per search term (multiple words allowed)." 
             "If a catalog number is used, it is automatically connected to additional context."
             "Search terms and context can be chosen freely. "
                      
@@ -217,7 +217,7 @@ def render_ai_tab():
         st.header("AI Screening")
         
         st.info(
-    "The search results from the literature search or an uploaded Excel file can be used."
+    "The search results from the literature search or an uploaded Excel file can be used." 
     "The output and decision are based on the found metadata."
         )
 
