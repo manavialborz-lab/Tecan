@@ -132,6 +132,8 @@ def search_paper(SERPAPI_KEY, start_year, end_year, search_entities, context_ter
               "link": "first"
           })
     )
+    
+    os.makedirs("Reports", exist_ok=True)
     df_unique.to_excel(f"Reports/search_result.xlsx", index=False)
     return df_unique 
 
