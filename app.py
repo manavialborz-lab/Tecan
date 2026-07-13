@@ -85,10 +85,10 @@ def render_search_tab():
     with left:
         st.header("Literature Search")
         st.info(
-            "Search logic: If a search term contains a product or catalog number "
-            "(for example a value with digits), the tool searches the term itself "
-            "and also combines it with each value from 'Additional context terms'. "
-            "For general text search terms without digits, only the original search term is used."
+            "Switch off VPN. Use one line per search term (multiple words allowed)."
+            "If a catalog number is used, it is automatically connected to additional context."
+            "Search terms and context can be chosen freely. "
+                     
             )
         
 
@@ -217,6 +217,7 @@ def render_ai_tab():
         st.header("AI Screening")
         
         st.info(
+    "The search results from the literature search or an uploaded Excel file can be used. The output and decision are based on the found metadata."
     "AI screening note: The PMS decision and reason are based on the available evidence source. "
     "If the evidence source is metadata only, the decision is based on limited information "
     "such as title, snippet, and summary. If page text was found, the decision also uses "
