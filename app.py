@@ -85,8 +85,8 @@ def render_search_tab():
     with left:
         st.header("Literature Search")
         st.info(
-            "Switch off VPN. Use one line per search term (multiple words allowed).\n\n"
-            "If a catalog number is used, it is automatically connected to additional context.\n\n"
+            "Switch off VPN. Use one line per search term (multiple words allowed).\n"
+            "If a catalog number is used, it is automatically connected to additional context. "
             "Search terms and context can be chosen freely. "
                      
             )
