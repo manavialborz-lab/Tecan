@@ -31,7 +31,7 @@ def install_playwright_browser_if_needed():
 install_playwright_browser_if_needed()
 
 ################################################################
-
+load_dotenv()
 openai_key = os.getenv("OPENAI_API_KEY")
 serpapi_key = os.getenv("SERPAPI_KEY")
 
@@ -217,7 +217,7 @@ def render_ai_tab():
         st.header("AI Screening")
         
         st.info(
-    "The search results from the literature search or an uploaded Excel file can be used." 
+    "The search results from the literature search or an uploaded Excel file can be used. " 
     "The output and decision are based on the found metadata."
         )
 
