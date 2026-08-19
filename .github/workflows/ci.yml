@@ -1,0 +1,70 @@
+# Name shown in the GitHub Actions tab
+name: CI
+
+# Defines when this workflow should run
+on:
+
+  # Run CI whenever code is pushed to the main branch
+  push:
+    branches:
+      - main
+
+  # Run CI whenever a pull request targets the main branch
+  pull_request:
+    branches:
+      - main
+
+  # Also allows you to start the workflow manually from GitHub Actions
+  workflow_dispatch:
+
+# Give this workflow read-only access to the repository contents
+permissions:
+  contents: read
+
+# A workflow can contain one or more jobs
+jobs:
+
+  # Name of our CI job
+  python-checks:
+
+    # GitHub creates a fresh Ubuntu virtual machine for this job
+    runs-on: ubuntu-latest
+
+    # Steps are executed one after another
+    steps:
+
+      # Download the repository onto the GitHub Actions runner
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      # Install the Python version required by the project
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          # Use Python 3.13, matching your local major/minor version
+          python-version: "3.13"
+
+          # Cache downloaded pip packages to make later CI runs faster
+          cache: "pip"
+
+      # Print the Python version in the CI log
+      - name: Show Python version
+        run: python --version
+
+      # Install all dependencies declared by the repository
+      - name: Install dependencies
+        run: |
+          # Update pip itself
+          python -m pip install --upgrade pip
+
+          # Install the packages required by the application
+          pip install -r requirements.txt
+
+      # Check whether the installed Python dependencies are compatible
+      - name: Check dependencies
+        run: python -m pip check
+
+      # Compile all Python files under src/
+      # This catches syntax errors before the code is merged/deployed
+      - name: Check Python syntax
+        run: python -m compileall -q src
