@@ -54,11 +54,19 @@ def search_paper(SERPAPI_KEY, start_year, end_year, search_entities, context_ter
             "num": 20,
             "start": 0,
             "as_ylo": start_year,
-            "as_yhi": end_year
+            "as_yhi": end_year, 
+            "no_cache": "True"
          }
     
         response = requests.get(url, params=params)
         data = response.json()
+
+        api_error = data.get("error")
+        if api_error:
+            if "hasn't returned any results" in api_error.lower():
+                print(f"{query} -> no Google Scholar results")
+                continue
+            raise RuntimeError(f"SerpAPI error: {api_error}")
 
         total_hits = data.get(
             "search_information", {}
@@ -94,6 +102,13 @@ def search_paper(SERPAPI_KEY, start_year, end_year, search_entities, context_ter
 
                 response = requests.get(url, params=params)
                 data = response.json()
+
+                api_error = data.get("error")
+                if api_error:
+                    if "hasn't returned any results" in api_error.lower():
+                        print(f"{query} -> no more Google Scholar results")
+                        break
+                    raise RuntimeError(f"SerpAPI error: {api_error}")
 
                 results = data.get("organic_results", [])
 
